@@ -5,11 +5,11 @@ const {google} = require('googleapis');
 const OAuth2 = google.auth.OAuth2;
 
 
-const client_id="441724442931-1o6gkh098q1epa2nh1h2efm88vcsbnsl.apps.googleusercontent.com"
-const client_secret="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"
-const redirect_uri="https://developers.google.com/oauthplayground/"
-const refresh_token="1//04-Ed9fzb4LavCgYIARAAGAQSNwF-L9Ir7HQqEmmufFju23XzqoruCMwntVSwYbI0Z82nBzf2ran9j1ptAYarRIMy04yTuc4jXd4"
-const user='latienditaax@gmail.com'
+const user= process.env.user 
+const client_id= process.env.client_id
+const client_secret= process.env.client_secret
+const refresh_token= process.env.refresh_token
+const redirect_uri=process.env.redirect_uri
 
 const oauthClient=new OAuth2(client_id,client_secret,redirect_uri)
 oauthClient.setCredentials({refresh_token:refresh_token})
@@ -17,7 +17,6 @@ const accessToken= oauthClient.getAccessToken()
 
 const sendEmail=async(receiver,subject,body)=>{
   try{
-
 
     const transport=nodemailer.createTransport({
     service:'gmail',
