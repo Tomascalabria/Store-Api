@@ -6,7 +6,7 @@ var router = express.Router();
 router.get('/', async (req, res) => {
  try{
 
-     let products = await database.query('SELECT * from products ')
+     let products = await database.query('SELECT * FROM products INNER JOIN inventory on inventory.product_id = products.product_id inner join categories on categories.category_id=products.product_category;')
      console.log('Products requested')
      res.status(200).json({
          message:'Productos encontrados satisfactoriamente',
@@ -25,14 +25,14 @@ router.get('/', async (req, res) => {
     });
 
 router.get('/:id',async(req,res)=>{
-console.log(req.params.id)
     try{
-    let product = await database.query(`SELECT * from products WHERE product_id=$1`,[req.params.id])    
+    let product = await database.query(`SELECT * FROM categories inner join products as p ON p.product_category=categories.category_id INNER JOIN inventory as i ON i.product_id=p.product_id WHERE p.product_id=$1;`,[req.params.id])    
     res.status(200).json({
         message:'Producto encontrado satisfactoriamente',
-        data:product.rows,
-        status:200
+        data:product.rows[0],
+        status:200  
     })
+console.log(product.rows)
 }
 catch(err){
     res.status(404).json({
